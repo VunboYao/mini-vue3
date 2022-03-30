@@ -7,7 +7,7 @@ class ReactiveEffect{
   run() {
     // todo:获取当前实例 fn
     activeEffect = this
-    this._fn()
+    return this._fn()
   }
 }
 
@@ -44,4 +44,6 @@ export function effect(fn) {
   // fn 需要立即执行
   const _effect = new ReactiveEffect(fn)
   _effect.run()
+
+  return _effect.run.bind(_effect)
 }
