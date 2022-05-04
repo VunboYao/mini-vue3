@@ -2,6 +2,7 @@ let activeEffect
 export function effect(fn) {
   const _effect = new ReactiveEffect(fn)
   _effect.run()
+  return _effect.run.bind(_effect)
 }
 
 class ReactiveEffect {
@@ -13,7 +14,7 @@ class ReactiveEffect {
   run() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     activeEffect = this
-    this._fn()
+    return this._fn()
   }
 }
 
