@@ -1,26 +1,16 @@
-import { mutableHandlers, readonlyHandlers } from './bashHandlers'
-
-export const enum ReactiveFlags {
-  IS_REACTIVE = '__v_isReactive',
-  IS_READONLY = '__v_isReadonly'
-}
+import { track, trigger } from './effect'
 
 export function reactive(raw) {
-  return createActiveObject(raw, mutableHandlers)
-}
-
-export function readonly(raw) {
-  return createActiveObject(raw, readonlyHandlers)
-}
-
-export function isReactive(value) {
-  return !!value[ReactiveFlags.IS_REACTIVE]
-}
-
-export function isReadonly(value) {
-  return !!value[ReactiveFlags.IS_READONLY]
-}
-
-function createActiveObject(raw, baseHandlers) {
-  return new Proxy(raw, baseHandlers)
+  return new Proxy(raw, {
+    get(target, key) {
+      const result = Reflect.get(target, key)
+      track(target, key)
+      return result
+    },
+    set(target, key, value) {
+      const result = Reflect.set(target, key, value)
+      trigger(target, key)
+      return result
+    },
+  })
 }
