@@ -1,14 +1,17 @@
 let activeEffect
-export function effect(fn) {
-  const _effect = new ReactiveEffect(fn)
+export function effect(fn, options: any = {}) {
+  const scheduler = options.scheduler
+  const _effect = new ReactiveEffect(fn, scheduler)
   _effect.run()
   return _effect.run.bind(_effect)
 }
 
 class ReactiveEffect {
-  private _fn: any
-  constructor(fn) {
+  private readonly _fn: any
+  public scheduler?: any
+  constructor(fn, scheduler?) {
     this._fn = fn
+    this.scheduler = scheduler
   }
 
   run() {
@@ -36,6 +39,10 @@ export function trigger(target, key) {
   const depsMap = targetMap.get(target)
   const dep = depsMap.get(key)
   for (const effect of dep) {
-    effect.run()
+    if (effect.scheduler) {
+      effect.scheduler()
+    } else {
+      effect.run()
+    }
   }
 }
