@@ -4,7 +4,7 @@ let activeEffect // reactiveEffect的实例
 export function effect(fn, options: any = {}) {
   const _effect = new ReactiveEffect(fn, options.scheduler)
   // options
-  Object.assign(_effect, options)
+  // Object.assign(_effect, options)
   // extend
   extend(_effect, options)
 
@@ -19,7 +19,8 @@ class ReactiveEffect {
   private readonly _fn: any
   public scheduler?(): void
   deps = []
-  active = true
+  active = true // 是否活跃的双向绑定，false则已经stop
+  isStop = false // todo:自己实现的暂停跟踪
   onStop?(): void // 可选的回调
   constructor(fn: any, scheduler?: any) {
     this._fn = fn
@@ -43,14 +44,17 @@ class ReactiveEffect {
 }
 
 function cleanupEffect(effect) {
+  effect.isStop = true // 当前effect已经停止
   effect.deps.forEach((dep: any) => {
     // 删除当前effect
     dep.delete(effect)
   })
+  effect.deps.length = 0
 }
 
 const targetMap = new Map()
 export function track(target, key) {
+  if (!isTracking()) { return }
   let depsMap = targetMap.get(target)
   if (!depsMap) {
     depsMap = new Map()
@@ -61,12 +65,19 @@ export function track(target, key) {
     depsMap.set(key, dep = new Set())
   }
 
-  // 如果没有effect函数,单纯的reactive,没有activeEffect
-  if (!activeEffect) { return }
+  if (dep.has(activeEffect)) { return }
 
   dep.add(activeEffect)
   // 反向收集所有执行Effect的dep
   activeEffect.deps.push(dep)
+}
+
+function isTracking() {
+  return activeEffect && !activeEffect.isStop
+  // 如果没有effect函数,单纯的reactive,没有activeEffect
+  // if (!activeEffect) { return }
+  // 不能再追踪依赖
+  // if (activeEffect.isStop) { return }
 }
 
 export function trigger(target, key) {
