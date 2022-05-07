@@ -1,4 +1,4 @@
-import { mutableHandler, readonlyHandler } from './baseHandlers'
+import { mutableHandler, readonlyHandler, shallowReadonlyHandler } from './baseHandlers'
 
 export const enum ReactiveFlags {
   IS_REACTIVE = '__is_Reactive',
@@ -11,6 +11,11 @@ export function reactive(raw) {
 
 export function readonly(raw) {
   return createActiveObject(raw, readonlyHandler)
+}
+
+// todo: 同reactive,readonly，传入原始数据与一个特有的handler
+export function shallowReadonly(raw) {
+  return createActiveObject(raw, shallowReadonlyHandler)
 }
 
 // 触发 get操作
