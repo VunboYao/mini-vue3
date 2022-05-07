@@ -13,6 +13,10 @@ function createGetter(isReadonly = false, shallow = false) {
 
     const result = Reflect.get(target, key)
 
+    // todo: first judge
+    if (!isReadonly) {
+      track(target, key)
+    }
     // todo: shallowReadonly
     if (shallow) {
       return result
@@ -23,9 +27,6 @@ function createGetter(isReadonly = false, shallow = false) {
       return isReadonly ? readonly(result) : reactive(result)
     }
 
-    if (!isReadonly) {
-      track(target, key)
-    }
     return result
   }
 }
