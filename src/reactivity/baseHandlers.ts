@@ -1,5 +1,6 @@
+import { isObject } from '../shared'
 import { track, trigger } from './effect'
-import { ReactiveFlags } from './reactive'
+import { ReactiveFlags, reactive, readonly } from './reactive'
 
 function createGetter(isReadonly = false) {
   return function get(target, key) {
@@ -10,6 +11,11 @@ function createGetter(isReadonly = false) {
     }
 
     const result = Reflect.get(target, key)
+    // todo: nested
+    if (isObject(result)) {
+      return isReadonly ? readonly(result) : reactive(result)
+    }
+
     if (!isReadonly) {
       track(target, key)
     }
