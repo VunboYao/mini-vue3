@@ -65,6 +65,10 @@ export function track(target, key) {
     depsMap.set(key, dep = new Set())
   }
 
+  trackEffects(dep)
+}
+
+export function trackEffects(dep) {
   if (dep.has(activeEffect)) { return }
 
   dep.add(activeEffect)
@@ -72,7 +76,7 @@ export function track(target, key) {
   activeEffect.deps.push(dep)
 }
 
-function isTracking() {
+export function isTracking() {
   return activeEffect && !activeEffect.isStop
   // 如果没有effect函数,单纯的reactive,没有activeEffect
   // if (!activeEffect) { return }
@@ -83,6 +87,10 @@ function isTracking() {
 export function trigger(target, key) {
   const depsMap = targetMap.get(target)
   const dep = depsMap.get(key)
+  triggerEffects(dep)
+}
+
+export function triggerEffects(dep) {
   // set结构的存储effect
   for (const effect of dep) {
     if (effect.scheduler) {

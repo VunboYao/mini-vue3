@@ -14,3 +14,7 @@ function getType(val) {
 export function isObject(val: any) {
   return val !== null && typeof val === 'object'
 }
+
+export function hasChange(newVal, val) {
+  return !Object.is(newVal, val)
+}
