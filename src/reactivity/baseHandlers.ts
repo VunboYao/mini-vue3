@@ -43,6 +43,7 @@ const get = createGetter()
 const set = createSetter()
 const readonlyGet = createGetter(true)
 const shallowReadonlyGet = createGetter(true, true)
+const shallowReactiveGet = createGetter(false, true)
 
 export const mutableHandler = {
   get,
@@ -60,4 +61,8 @@ export const readonlyHandler = {
 // todo: extends the readonlyHandler
 export const shallowReadonlyHandler = extend({}, readonlyHandler, {
   get: shallowReadonlyGet,
+})
+
+export const shallowReactiveHandler = extend({}, mutableHandler, {
+  get: shallowReactiveGet,
 })
