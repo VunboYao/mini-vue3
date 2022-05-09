@@ -15,7 +15,7 @@ export function effect(fn, options: any = {}) {
   return runner
 }
 
-class ReactiveEffect {
+export class ReactiveEffect {
   private readonly _fn: any
   public scheduler?(): void
   deps = []
