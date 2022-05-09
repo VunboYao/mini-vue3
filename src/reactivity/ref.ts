@@ -42,9 +42,26 @@ export function ref(value) {
 }
 
 export function isRef(ref) {
-  return !!ref.__is_Ref
+  return ref.__is_Ref
 }
 
 export function unRef(ref) {
   return isRef(ref) ? ref.value : ref
+}
+
+export function proxyRefs(objectWithRefs) {
+  return new Proxy(objectWithRefs, {
+    get(target, key, receiver) {
+      return unRef(Reflect.get(target, key, receiver))
+    },
+    set(target: any, p: string | symbol, value: any, receiver: any) {
+      // 在原ref的value上赋值
+      if (isRef(target[p]) && !isRef(value)) {
+        return target[p].value = value
+      } else {
+        // 新的ref直接赋值
+        return Reflect.set(target, p, value, receiver)
+      }
+    },
+  })
 }
