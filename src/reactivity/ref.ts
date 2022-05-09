@@ -42,7 +42,8 @@ export function ref(value) {
 }
 
 export function isRef(ref) {
-  return ref.__is_Ref
+  const { __is_Ref } = ref
+  return !!__is_Ref
 }
 
 export function unRef(ref) {
