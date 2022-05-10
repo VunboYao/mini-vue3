@@ -33,6 +33,7 @@ describe('computed', () => {
     expect(getter).toHaveBeenCalledTimes(1)
 
     // should not compute until needed
+    // todo:触发trigger,将dirty改为true，下一次获取value时，执行getter
     value.foo = 2
     expect(getter).toHaveBeenCalledTimes(1)
 
