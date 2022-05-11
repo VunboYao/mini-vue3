@@ -2,8 +2,10 @@
   "name": "mini-vue3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/guide-mini-vue.cjs.js",
+  "module": "lib/guide-mini-vue.esm.js",
   "scripts": {
+    "build": "rollup -c rollup.config.js",
     "test": "jest",
     "cz": "cz",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -13,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.3.2",
     "@types/jest": "^27.5.0",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
@@ -22,13 +25,15 @@
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "rollup": "^2.72.1"
   },
   "dependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-typescript": "^7.16.7",
     "babel-jest": "^27.5.1",
+    "tslib": "*",
     "typescript": "^4.6.4"
   },
   "config": {

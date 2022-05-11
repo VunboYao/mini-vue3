@@ -1,7 +1,7 @@
-export const App = {
+import { h } from '../../lib/guide-mini-vue.esm.js'
+export default {
   render() {
     // ui
-    // eslint-disable-next-line no-undef
     return h('div', `Hi, ${this.msg}`)
   },
   setup() {

@@ -9,6 +9,9 @@ export function createApp(rootComponent) {
       // 所有的逻辑操作都会基于 vnode 处理
       const vnode = createVNode(rootComponent)
 
+      if (typeof rootContainer === 'string') {
+        rootContainer = document.querySelector(rootContainer)
+      }
       render(vnode, rootContainer)
     },
   }
