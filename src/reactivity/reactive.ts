@@ -6,20 +6,20 @@ export const enum ReactiveFlags {
 }
 
 export function reactive(raw) {
-  return createActiveObject(raw, mutableHandler)
+  return createReactiveObject(raw, mutableHandler)
 }
 
 export function readonly(raw) {
-  return createActiveObject(raw, readonlyHandler)
+  return createReactiveObject(raw, readonlyHandler)
 }
 
 // todo: 同reactive,readonly，传入原始数据与一个特有的handler
 export function shallowReadonly(raw) {
-  return createActiveObject(raw, shallowReadonlyHandler)
+  return createReactiveObject(raw, shallowReadonlyHandler)
 }
 
 export function shallowReactive(raw) {
-  return createActiveObject(raw, shallowReactiveHandler)
+  return createReactiveObject(raw, shallowReactiveHandler)
 }
 
 // 触发 get操作
@@ -36,6 +36,6 @@ export function isProxy(value) {
   return isReactive(value) || isReadonly(value)
 }
 
-function createActiveObject(raw, baseHandler) {
+function createReactiveObject(raw, baseHandler) {
   return new Proxy(raw, baseHandler)
 }
