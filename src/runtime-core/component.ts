@@ -1,3 +1,5 @@
+import { PublicInstanceProxyHandlers } from './componentPublicInstance'
+
 export function createComponentInstance(vnode: any) {
   const component = {
     vnode,
@@ -13,15 +15,7 @@ export function setupComponent(instance) {
   setupStatefulComponent(instance)
 
   // ctx 创建一个代理，方便直接通过this获取setupState上的数据
-  instance.proxy = new Proxy({}, {
-    get(target, key) {
-      // setupState
-      const { setupState } = instance
-      if (key in setupState) {
-        return setupState[key]
-      }
-    },
-  })
+  instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers)
 }
 
 function setupStatefulComponent(instance) {

@@ -28,7 +28,8 @@ function mountElement(vnode: any, container: any) {
   const { type, props, children } = vnode
 
   // * createElement
-  const el = document.createElement(type)
+  // vnode.el = div
+  const el = vnode.el = document.createElement(type)
 
   // *setAttribute
   for (const key in props) {
@@ -55,18 +56,21 @@ function processComponent(vnode, container) {
   mountComponent(vnode, container)
 }
 
-function mountComponent(vnode, container) {
-  const instance = createComponentInstance(vnode)
+function mountComponent(initialVNode, container) {
+  const instance = createComponentInstance(initialVNode)
   setupComponent(instance)
-  setupRenderEffect(instance, container)
+  setupRenderEffect(instance, initialVNode, container)
 }
 
-function setupRenderEffect(instance: any, container) {
+function setupRenderEffect(instance: any, initialVNode, container) {
   // 得到组件对应的虚拟dom
   const { proxy } = instance // 从实例中获取代理
   const subTree = instance.render.call(proxy)
 
   // vnode => patch
-  // vnode => element => mountElement
+  // initialVNode => element => mountElement
   patch(subTree, container)
+
+  // 所有的 element => mount
+  initialVNode.el = subTree.el
 }
