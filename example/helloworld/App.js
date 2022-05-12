@@ -6,11 +6,11 @@ export default {
       id: 'root',
       class: 'blue',
     },
-    // `Hi, ${this.msg}`, // string
-    [
-      h('span', { class: 'red' }, 'Hello'),
-      h('span', { class: 'blue' }, ' Vue3'),
-    ],
+    `Hi, ${this.msg}`, // string
+    // [
+    //   h('span', { class: 'red' }, 'Hello'),
+    //   h('span', { class: 'blue' }, ' Vue3'),
+    // ],
     )
   },
   setup() {

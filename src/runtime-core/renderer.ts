@@ -63,7 +63,8 @@ function mountComponent(vnode, container) {
 
 function setupRenderEffect(instance: any, container) {
   // 得到组件对应的虚拟dom
-  const subTree = instance.render()
+  const { proxy } = instance // 从实例中获取代理
+  const subTree = instance.render.call(proxy)
 
   // vnode => patch
   // vnode => element => mountElement
