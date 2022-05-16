@@ -8,6 +8,7 @@ specifiers:
   '@types/jest': ^27.5.0
   '@typescript-eslint/eslint-plugin': ^5.22.0
   '@typescript-eslint/parser': ^5.22.0
+  '@vunbo/config-ts': ^1.0.5
   '@vunbo/eslint-config': ^1.0.1
   babel-jest: ^27.5.1
   commitizen: ^4.2.4
@@ -24,6 +25,7 @@ dependencies:
   '@babel/core': 7.17.10
   '@babel/preset-env': 7.17.10_@babel+core@7.17.10
   '@babel/preset-typescript': 7.16.7_@babel+core@7.17.10
+  '@vunbo/config-ts': 1.0.5
   babel-jest: 27.5.1_@babel+core@7.17.10
   tslib: 1.14.1
   typescript: 4.6.4
@@ -1925,6 +1927,10 @@ packages:
       '@typescript-eslint/types': 5.22.0
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vunbo/config-ts/1.0.5:
+    resolution: {integrity: sha512-7GMVZO5glU+a5Msx/rkVmSnEFHjd/ZjYYzV6Kr+A3TaXWMVuAbheV9hmJ4cwASbBRpzFYrob1SMaaGYyLduN8g==}
+    dev: false
 
   /@vunbo/eslint-config/1.0.1_hcfsmds2fshutdssjqluwm76uu:
     resolution: {integrity: sha512-JZpBVwcoIQ3PFHhV8UoRXki3Y9nVgGAxt3Ymf8ZKTl1CEiYtAGmO5hJdJboUqkZZNrlUtEe5oSJNBFtb4zTAUg==}

@@ -20,3 +20,20 @@ export function hasChange(newVal, val) {
 }
 
 export const hasOwn = (object, key) => Object.prototype.hasOwnProperty.call(object, key)
+
+// 首字母大写
+export const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+// 拼接onXxx
+export const toHandlerKey = (str: string) => {
+  return str ? `on${capitalize(str)}` : ''
+}
+
+// kebabCase => camelCase
+export const camelCase = (str: string) => {
+  return str.replace(/-(\w)/g, (_, t: string) => {
+    return t ? t.toUpperCase() : ''
+  })
+}
