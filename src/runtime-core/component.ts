@@ -7,7 +7,7 @@ export function createComponentInstance(vnode: any) {
     vnode,
     type: vnode.type,
     setupState: {}, // todo:组件实例上初始化setupState || function
-    props: {},
+    props: {}, // 父级传入的属性
   }
   return component
 }
@@ -25,6 +25,7 @@ export function setupComponent(instance) {
   instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers)
 }
 
+// 生成一个有状态的组件
 function setupStatefulComponent(instance) {
   const Component = instance.type
   const { setup } = Component

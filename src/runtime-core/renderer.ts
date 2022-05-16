@@ -31,7 +31,7 @@ function mountElement(vnode: any, container: any) {
   // vnode.el = div
   const el = vnode.el = document.createElement(type)
 
-  // *setAttribute
+  // * setAttribute
   for (const key in props) {
     const val = props[key]
 
