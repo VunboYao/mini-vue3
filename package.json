@@ -16,9 +16,9 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
-    "@types/jest": "^27.5.0",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
+    "@types/jest": "^27.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "@vunbo/eslint-config": "^1.0.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
@@ -26,7 +26,7 @@
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
-    "rollup": "^2.72.1"
+    "rollup": "^2.73.0"
   },
   "dependencies": {
     "@babel/core": "^7.17.10",
