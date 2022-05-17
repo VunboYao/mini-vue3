@@ -1,4 +1,4 @@
-import { h } from '../../lib/guide-mini-vue.esm.js'
+import { createTextVNode, h } from '../../lib/guide-mini-vue.esm.js'
 import { Foo } from './Foo.js'
 
 export default {
@@ -11,7 +11,10 @@ export default {
       Foo,
       {},
       {
-        header: ({ age }) => h('p', {}, `header slot ${age}`),
+        header: ({ age }) => [
+          h('p', {}, `header slot ${age}`),
+          createTextVNode('Hello Vue3'),
+        ],
         footer: () => h('p', {}, 'footer slot'),
       })
     // const foo = h(Foo, {}, h('p', {}, 'singleSlot'))
