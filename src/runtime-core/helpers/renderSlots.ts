@@ -1,4 +1,5 @@
 import { Fragment, createVNode } from '../vnode'
+// 数组不能渲染。必须转换成vnode的children
 export function renderSlots(slots, name, props) {
   // //如果插槽内容是数组，则将$slots看作是children(array) => vnode 数组字元素，放到vnode中渲染s
   // 具名插槽。获取对应name的插槽内容
