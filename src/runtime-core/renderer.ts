@@ -1,5 +1,6 @@
 import { ShapeFlags } from '../shared/shapeFlags'
 import { createComponentInstance, setupComponent } from './component'
+import { Fragment } from './vnode'
 
 export function render(vnode, container) {
   // patch => mount/update
@@ -8,14 +9,22 @@ export function render(vnode, container) {
 
 function patch(vnode, container) {
   // todo： component || element
-  const { shapeFlag } = vnode
-  // console.log(type) // 组件是Object, element是字符串
-  if (shapeFlag & ShapeFlags.ELEMENT) {
-    // 处理 element
-    processElement(vnode, container)
-  } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    // 处理组件
-    processComponent(vnode, container)
+  const { type, shapeFlag } = vnode
+  // console.log(type) // 组件是Object, element是字符串, Fragment slots
+
+  switch (type) {
+    // Fragment only render children
+    case Fragment:
+      processFragment(vnode, container)
+      break
+    default:
+      if (shapeFlag & ShapeFlags.ELEMENT) {
+        // 处理 element
+        processElement(vnode, container)
+      } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+        // 处理组件
+        processComponent(vnode, container)
+      }
   }
 }
 function processElement(vnode, container) {
@@ -82,4 +91,8 @@ function setupRenderEffect(instance: any, initialVNode, container) {
 
   // 所有的 element => mount
   initialVNode.el = subTree.el
+}
+
+function processFragment(vnode: any, container: any) {
+  mountChildren(vnode.children, container)
 }
