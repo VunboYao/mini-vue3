@@ -10,8 +10,8 @@ export function createComponentInstance(vnode: any) {
     type: vnode.type,
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: {}, // 父级传入的属性
-    slots: {},
-    emit: () => {},
+    slots: {}, // 实例上的slots映射 vnode.children
+    emit: () => { },
   }
 
   // 挂载到组件实例上

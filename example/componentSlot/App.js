@@ -6,11 +6,15 @@ export default {
   render() {
     const app = h('div', {}, 'App')
     // 本质是将Foo组件的children，vnode.children展示
-    /* const foo = h(Foo, {}, [
-      h('p', {}, 'slot'),
-      h('p', {}, 'array slot'),
-    ]) */
-    const foo = h(Foo, {}, h('p', {}, 'singleSlot'))
+    // 通过object[key]获取要渲染的元素
+    const foo = h(
+      Foo,
+      {},
+      {
+        header: h('p', {}, 'header slot'),
+        footer: h('p', {}, 'footer slot'),
+      })
+    // const foo = h(Foo, {}, h('p', {}, 'singleSlot'))
     return h('div', {}, [app, foo])
   },
   setup() {
