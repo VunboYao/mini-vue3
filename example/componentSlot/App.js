@@ -11,8 +11,8 @@ export default {
       Foo,
       {},
       {
-        header: h('p', {}, 'header slot'),
-        footer: h('p', {}, 'footer slot'),
+        header: ({ age }) => h('p', {}, `header slot ${age}`),
+        footer: () => h('p', {}, 'footer slot'),
       })
     // const foo = h(Foo, {}, h('p', {}, 'singleSlot'))
     return h('div', {}, [app, foo])

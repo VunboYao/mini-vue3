@@ -12,8 +12,9 @@ export const Foo = {
     // 位置
     // 1.获取到要渲染的元素 => obj[key]
     // 2.获取到要渲染的位置
+    const age = 18
     return h('div', {}, [
-      renderSlots(this.$slots, 'header'),
+      renderSlots(this.$slots, 'header', { age }),
       foo,
       renderSlots(this.$slots, 'footer'),
     ])
