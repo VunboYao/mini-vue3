@@ -2,6 +2,7 @@ import { shallowReadonly } from '../reactivity/reactive'
 import { emit } from './componentEmit'
 import { initProps } from './componentProps'
 import { PublicInstanceProxyHandlers } from './componentPublicInstance'
+import { initSlots } from './componentSlots'
 
 export function createComponentInstance(vnode: any) {
   const component = {
@@ -9,6 +10,7 @@ export function createComponentInstance(vnode: any) {
     type: vnode.type,
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: {}, // 父级传入的属性
+    slots: {},
     emit: () => {},
   }
 
@@ -21,13 +23,14 @@ export function setupComponent(instance) {
   // *组件setup前，将props数据传入
   initProps(instance, instance.vnode.props)
 
-  // todo:initSlots
+  // 初始化插槽
+  initSlots(instance, instance.vnode.children)
 
   // *组件setup处理
   setupStatefulComponent(instance)
 
   // !ctx 创建一个代理，方便直接通过this获取setupState上的数据.
-  // *组件数据代理，$el, setup，props
+  // *组件数据代理，$el, setup，props，$slots
   instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers)
 }
 

@@ -1,4 +1,4 @@
-import { extend } from '../shared/index'
+import { extend } from '../shared'
 
 let activeEffect // reactiveEffect的实例
 export function effect(fn, options: any = {}) {
