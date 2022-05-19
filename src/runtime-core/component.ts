@@ -39,11 +39,16 @@ function setupStatefulComponent(instance) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    // function / object
+    // 只能在setup中调用该API
+    setCurrentInstance(instance)
+
+    // todo: ?function / object
     // *传入组件的props是shallowReadonly浅只读的
     const setupResult = setup(shallowReadonly(instance.props), {
       emit: instance.emit, // 利用实例挂载emit
     })
+    // 只能在setup中调用该API
+    setCurrentInstance(null)
 
     handleSetupResult(instance, setupResult)
   }
@@ -65,4 +70,14 @@ function finishComponentSetup(instance: any) {
   if (Component.render) {
     instance.render = Component.render
   }
+}
+
+let currentInstance = null
+export function getCurrentInstance() {
+  return currentInstance
+}
+
+// todo:方便全局跟踪，中间层，防止变量被意外修改导致的bug
+export function setCurrentInstance(instance) {
+  currentInstance = instance
 }
