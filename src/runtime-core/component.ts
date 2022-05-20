@@ -4,13 +4,17 @@ import { initProps } from './componentProps'
 import { PublicInstanceProxyHandlers } from './componentPublicInstance'
 import { initSlots } from './componentSlots'
 
-export function createComponentInstance(vnode: any) {
+export function createComponentInstance(vnode: any, parent) {
+  // eslint-disable-next-line no-console
+  console.log('createComponentInstance', parent)
   const component = {
     vnode,
     type: vnode.type,
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: {}, // 父级传入的属性
     slots: {}, // 实例上的slots映射 vnode.children
+    provides: {},
+    parent,
     emit: () => { },
   }
 
