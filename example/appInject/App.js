@@ -1,6 +1,7 @@
 import { h, inject, provide } from '../../lib/guide-mini-vue.esm.js'
 
 let Consumer
+let ProviderTwo
 const Provider = {
   name: 'Provider',
   setup() {
@@ -8,7 +9,22 @@ const Provider = {
     provide('bar', 'barVal')
   },
   render() {
-    return h('div', {}, [h('p', {}, 'Provider'), h(Consumer)])
+    return h('div', {}, [h('p', {}, 'Provider'), h(ProviderTwo)])
+  },
+}
+
+ProviderTwo = {
+  name: 'ProviderTwo',
+  setup() {
+    provide('foo', 'fooValTwo')
+    // provide('bar', 'barVal')
+    const foo = inject('foo')
+    return {
+      foo,
+    }
+  },
+  render() {
+    return h('div', {}, [h('p', {}, `ProviderTwo: -${this.foo}`), h(Consumer)])
   },
 }
 

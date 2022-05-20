@@ -13,7 +13,7 @@ export function createComponentInstance(vnode: any, parent) {
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: {}, // 父级传入的属性
     slots: {}, // 实例上的slots映射 vnode.children
-    provides: {},
+    provides: parent ? parent.provides : {}, // 组件实例的provides指向parent的provides
     parent,
     emit: () => { },
   }
