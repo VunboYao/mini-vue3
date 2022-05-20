@@ -33,14 +33,16 @@ Consumer = {
   setup() {
     const foo = inject('foo')
     const bar = inject('bar')
+    const baz = inject('baz', () => 'bgzDefault')
 
     return {
       foo,
       bar,
+      baz,
     }
   },
   render() {
-    return h('div', {}, `Consumer: -${this.foo} - ${this.bar}`)
+    return h('div', {}, `Consumer: -${this.foo} - ${this.bar}-${this.baz}`)
   },
 }
 

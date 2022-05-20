@@ -4,10 +4,10 @@ import { Fragment, Text } from './vnode'
 
 export function render(vnode, container) {
   // patch => mount/update
-  patch(vnode, container)
+  patch(vnode, container, null)
 }
 
-function patch(vnode, container, parentComponent?) {
+function patch(vnode, container, parentComponent) {
   // todo： component || element
   const { type, shapeFlag } = vnode
   // console.log(type) // 组件是Object, element是字符串, Fragment slots
