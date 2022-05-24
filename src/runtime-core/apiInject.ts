@@ -20,18 +20,18 @@ export function provide(key, value) {
     provides[key] = value
   }
 }
-export function inject(key, defaultValue) {
+export function inject(key, value) {
   const currentInstance: any = getCurrentInstance()
   if (currentInstance) {
     // 从父组件中获取对应的provides
     const parentProvides = currentInstance.parent.provides
     if (key in parentProvides) {
       return parentProvides[key]
-    } else if (defaultValue) {
-      if (typeof defaultValue === 'function') {
-        return defaultValue()
+    } else if (value) {
+      if (typeof value === 'function') {
+        return value()
       }
-      return defaultValue
+      return value
     }
   }
 }
