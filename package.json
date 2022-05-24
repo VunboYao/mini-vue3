@@ -8,7 +8,7 @@
     "build": "rollup -c rollup.config.js -w",
     "test": "jest",
     "cz": "cz",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "prepare": "husky install"
   },
   "keywords": [],
