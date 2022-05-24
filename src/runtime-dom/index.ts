@@ -18,6 +18,7 @@ function insert(el, parent) {
   parent.append(el)
 }
 
+// * 暴露 renderer.createApp 真实的createApp 渲染挂载
 const renderer: any = createRenderer({
   createElement,
   patchProp,
