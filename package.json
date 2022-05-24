@@ -17,22 +17,22 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/jest": "^27.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "@typescript-eslint/parser": "^5.23.0",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
     "@vunbo/eslint-config": "^1.0.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.15.0",
+    "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
-    "rollup": "^2.73.0"
+    "rollup": "^2.74.1"
   },
   "dependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "@babel/preset-typescript": "^7.16.7",
-    "@vunbo/config-ts": "^1.0.5",
+    "@babel/core": "^7.18.0",
+    "@babel/preset-env": "^7.18.0",
+    "@babel/preset-typescript": "^7.17.12",
+    "@vunbo/config-ts": "^1.0.6",
     "babel-jest": "^27.5.1",
     "tslib": "*",
     "typescript": "^4.6.4"
