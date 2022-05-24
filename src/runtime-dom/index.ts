@@ -21,7 +21,7 @@ function insert(el, parent) {
 const renderer: any = createRenderer({
   createElement,
   patchProp,
-  insert,
+  insert
 })
 
 // 导出createApp方法。内部实现了renderer的createApp
