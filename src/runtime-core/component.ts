@@ -1,3 +1,4 @@
+import { proxyRefs } from '../reactivity'
 import { shallowReadonly } from '../reactivity/reactive'
 import { emit } from './componentEmit'
 import { initProps } from './componentProps'
@@ -67,8 +68,9 @@ function handleSetupResult(instance, setupResult: any) {
   // function || Object
   // todo: function
   if (typeof setupResult === 'object') {
-    // !如果setup的返回是一个对象，将返回结果赋值到组件实例上
-    instance.setupState = setupResult
+    // !如果setup的返回是一个对象，将返回结果赋值到组件实例上.
+    // * 将setup返回的数据作unRef处理
+    instance.setupState = proxyRefs(setupResult)
   }
 
   finishComponentSetup(instance)

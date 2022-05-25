@@ -13,6 +13,10 @@ export function createAppAPI(render) {
 
         if (typeof rootContainer === 'string') {
           rootContainer = document.querySelector(rootContainer)
+          // !监测传入的挂载元素是否是合理的
+          if (rootContainer === null) {
+            console.warn(`The rootContainer ${rootContainer} isn't a elementNode`)
+          }
         }
         render(vnode, rootContainer)
       },
