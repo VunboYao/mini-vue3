@@ -3,6 +3,7 @@ import { createComponentInstance, setupComponent } from './component'
 import { createAppAPI } from './createApp'
 import { Fragment, Text } from './vnode'
 
+// render渲染器
 export function createRenderer(options) {
   const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options
 

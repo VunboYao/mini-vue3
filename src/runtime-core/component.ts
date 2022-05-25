@@ -4,6 +4,7 @@ import { initProps } from './componentProps'
 import { PublicInstanceProxyHandlers } from './componentPublicInstance'
 import { initSlots } from './componentSlots'
 
+// 创建组件实例，props,slots,provides,emit等初始化
 export function createComponentInstance(vnode: any, parent) {
   // eslint-disable-next-line no-console
   console.log('createComponentInstance', parent)
@@ -23,6 +24,8 @@ export function createComponentInstance(vnode: any, parent) {
   component.emit = emit.bind(null, component) as any
   return component
 }
+
+// 组件初始化：props,slots,setup等并代理到组件实例上
 export function setupComponent(instance) {
   // *组件setup前，将props数据传入
   initProps(instance, instance.vnode.props)
@@ -58,6 +61,7 @@ function setupStatefulComponent(instance) {
   }
 }
 
+// 将setup返回的结果挂载到实例上
 function handleSetupResult(instance, setupResult: any) {
   // function || Object
   // todo: function
@@ -69,6 +73,7 @@ function handleSetupResult(instance, setupResult: any) {
   finishComponentSetup(instance)
 }
 
+// 结束setup处理
 function finishComponentSetup(instance: any) {
   const Component = instance.type
   if (Component.render) {
