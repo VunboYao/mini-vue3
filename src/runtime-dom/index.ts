@@ -5,6 +5,7 @@ function createElement(type) {
 }
 
 function patchProp(el, key, val) {
+  // 事件与属性的处理
   const isOn = (key: string) => /^on[A-Z]/.test(key)
   if (isOn(key)) {
     const event = key.slice(2).toLowerCase()

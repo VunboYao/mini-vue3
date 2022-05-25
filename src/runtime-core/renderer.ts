@@ -38,6 +38,8 @@ export function createRenderer(options) {
   function processElement(vnode, container, parentComponent) {
     mountElement(vnode, container, parentComponent)
   }
+
+  // 挂载元素以及对应的属性
   function mountElement(vnode: any, container: any, parentComponent) {
     // type: div
     // props: attribute

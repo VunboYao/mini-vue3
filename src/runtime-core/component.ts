@@ -46,7 +46,7 @@ function setupStatefulComponent(instance) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    // 只能在setup中调用该API
+    // !获取currentInstance前置方法：只能在setup中调用该API
     setCurrentInstance(instance)
 
     // todo: ?function / object
@@ -54,9 +54,10 @@ function setupStatefulComponent(instance) {
     const setupResult = setup(shallowReadonly(instance.props), {
       emit: instance.emit, // 利用实例挂载emit
     })
-    // 只能在setup中调用该API
+    // !关闭获取currentInstance的后置方法：只能在setup中调用该API
     setCurrentInstance(null)
 
+    // 将setup的数据挂载到instance.setupState上
     handleSetupResult(instance, setupResult)
   }
 }
