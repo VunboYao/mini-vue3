@@ -19,4 +19,7 @@ module.exports = {
   //   semi: [2, 'never']
   // }
   extends: '@vunbo',
+  rules: {
+    'no-console': 0,
+  },
 }
