@@ -4,7 +4,7 @@ import { createAppAPI } from './createApp'
 import { Fragment, Text } from './vnode'
 
 export function createRenderer(options) {
-  const { createElement, patchProp, insert } = options
+  const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options
 
   function render(vnode, container) {
     // patch => mount/update
@@ -43,16 +43,18 @@ export function createRenderer(options) {
     // children: string || array
     const { type, props, children, shapeFlag } = vnode
 
-    // * createElement
+    // * hostCreateElement
     // vnode.el = div
-    const el = vnode.el = createElement(type)
+    // ! 从外部传入的createElement中拿到挂载的元素
+    const el = vnode.el = hostCreateElement(type)
 
     // * setAttribute
     for (const key in props) {
       const val = props[key]
 
       // !事件处理
-      patchProp(el, key, val)
+      // !将属性挂载到el上
+      hostPatchProp(el, key, val)
     }
 
     // * textContent
@@ -64,7 +66,8 @@ export function createRenderer(options) {
 
     // * appendChild
     // container.appendChild(el)
-    insert(el, container)
+    // !利用外部的挂载方法
+    hostInsert(el, container)
   }
   function mountChildren(children, container, parentComponent) {
     children.forEach((v) => {
