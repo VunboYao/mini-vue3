@@ -18,6 +18,8 @@ export function createComponentInstance(vnode: any, parent) {
     provides: parent ? parent.provides : {}, // 组件实例的provides指向parent的provides
     parent,
     emit: () => { },
+    isMounted: false, // 默认没有挂载
+    subTree: {},
   }
 
   // 挂载到组件实例上
