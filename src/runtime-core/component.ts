@@ -1,5 +1,6 @@
 import { proxyRefs } from '../reactivity'
 import { shallowReadonly } from '../reactivity/reactive'
+import { EMPTY_OBJ } from '../shared'
 import { emit } from './componentEmit'
 import { initProps } from './componentProps'
 import { PublicInstanceProxyHandlers } from './componentPublicInstance'
@@ -13,7 +14,7 @@ export function createComponentInstance(vnode: any, parent) {
     vnode,
     type: vnode.type,
     setupState: {}, // todo:组件实例上初始化setupState || function
-    props: {}, // 父级传入的属性
+    props: EMPTY_OBJ, // 父级传入的属性
     slots: {}, // 实例上的slots映射 vnode.children
     provides: parent ? parent.provides : {}, // 组件实例的provides指向parent的provides
     parent,

@@ -1,4 +1,5 @@
 import { effect } from '../reactivity/effect'
+import { EMPTY_OBJ } from '../shared'
 import { ShapeFlags } from '../shared/shapeFlags'
 import { createComponentInstance, setupComponent } from './component'
 import { createAppAPI } from './createApp'
@@ -51,7 +52,34 @@ export function createRenderer(options) {
   function patchElement(n1, n2, container) {
     console.log('patchElement', container)
     console.log(n1, n2)
+
+    const oldProps = n1.props
+    const newProps = n2.props
+
+    const el = n2.el = n1.el
+    patchProps(el, oldProps, newProps)
   }
+
+  function patchProps(el, oldProps, newProps) {
+    if (oldProps !== newProps) {
+      for (const key in newProps) {
+        const prevProp = oldProps[key]
+        const nextProp = newProps[key]
+        if (prevProp !== nextProp) {
+          hostPatchProp(el, key, prevProp, nextProp)
+        }
+      }
+
+      if (oldProps !== EMPTY_OBJ) {
+        for (const key in oldProps) {
+          if (!(key in newProps)) {
+            hostPatchProp(el, key, oldProps[key], null)
+          }
+        }
+      }
+    }
+  }
+
   // 挂载元素以及对应的属性
   function mountElement(vnode: any, container: any, parentComponent) {
     // type: div
@@ -70,7 +98,7 @@ export function createRenderer(options) {
 
       // !事件处理
       // !将属性挂载到el上
-      hostPatchProp(el, key, val)
+      hostPatchProp(el, key, null, val)
     }
 
     // * textContent

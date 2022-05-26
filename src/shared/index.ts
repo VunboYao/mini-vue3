@@ -1,5 +1,6 @@
 export const extend = Object.assign
 
+export const EMPTY_OBJ = {}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getType(val) {
   const type = typeof val

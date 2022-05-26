@@ -4,14 +4,19 @@ function createElement(type) {
   return document.createElement(type)
 }
 
-function patchProp(el, key, val) {
+function patchProp(el, key, prevValue, nextValue) {
   // 事件与属性的处理
   const isOn = (key: string) => /^on[A-Z]/.test(key)
   if (isOn(key)) {
     const event = key.slice(2).toLowerCase()
-    el.addEventListener(event, val)
+    el.addEventListener(event, nextValue)
   } else {
-    el.setAttribute(key, val)
+    // 删除属性操作
+    if (nextValue === undefined || nextValue === null) {
+      el.removeAttribute(key)
+    } else {
+      el.setAttribute(key, nextValue)
+    }
   }
 }
 
