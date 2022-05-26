@@ -1,5 +1,6 @@
 import { h } from '../../lib/guide-mini-vue.esm.js'
-import ArrayToText from './ArrayToText.js'
+// import ArrayToText from './ArrayToText.js'
+import TextToText from './TextToText.js'
 export const App = {
   name: 'App',
   setup() {},
@@ -7,8 +8,9 @@ export const App = {
     return h('div', { tId: 1 }, [
       h('p', {}, '主页'),
       // 老的是 array 新的是 text
-      h(ArrayToText),
+      // h(ArrayToText),
       // 老的是 text, 新的是 text
+      h(TextToText),
       // 老的是 text，新的是 array
     ])
   },

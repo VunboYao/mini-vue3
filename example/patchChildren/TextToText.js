@@ -1,11 +1,11 @@
-// 新的是Text
-// 老的是Array
+// 新的是 Text
+// 老的是 Text
 import { h, ref } from '../../lib/guide-mini-vue.esm.js'
 
 const nextChildren = 'newChildren'
-const prevChildren = [h('div', {}, 'A'), h('div', {}, 'B')]
+const prevChildren = 'oldChildren'
 export default {
-  name: 'ArrayToText',
+  name: 'TextToText',
   setup() {
     const isChange = ref(false)
     window.isChange = isChange
