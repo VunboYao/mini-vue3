@@ -7,7 +7,13 @@ import { Fragment, Text } from './vnode'
 
 // render渲染器
 export function createRenderer(options) {
-  const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options
+  const {
+    createElement: hostCreateElement,
+    patchProp: hostPatchProp,
+    insert: hostInsert,
+    remove: hostRemove,
+    setElementText: hostSetElementText,
+  } = options
 
   function render(vnode, container) {
     // patch => mount/update
@@ -57,9 +63,34 @@ export function createRenderer(options) {
     const newProps = n2.props
 
     const el = n2.el = n1.el
+    patchChildren(n1, n2, el)
     patchProps(el, oldProps, newProps)
   }
 
+  function patchChildren(n1, n2, container) {
+    // !老的children的类型
+    const prevShapeFlag = n1.shapeFlag
+    // !新的children的类型
+    const { shapeFlag } = n2
+    const c2 = n2.children // 获取需要设置的值
+    // 新的是文本
+    if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
+      // 老的是array
+      if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+        // *1.remove old children
+        unmountChildren(n1.children)
+        // *2.set NewText
+        hostSetElementText(container, c2)
+      }
+    }
+  }
+  function unmountChildren(children) {
+    for (let i = 0; i < children.length; i++) {
+      const el = children[i]
+      // !remove
+      hostRemove(el)
+    }
+  }
   function patchProps(el, oldProps, newProps) {
     if (oldProps !== newProps) {
       for (const key in newProps) {

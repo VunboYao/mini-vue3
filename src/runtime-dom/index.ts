@@ -24,11 +24,24 @@ function insert(el, parent) {
   parent.append(el)
 }
 
+function remove(child) {
+  const parent = child.parentNode
+  if (parent) {
+    parent.removeChild(child)
+  }
+}
+
+function setElementText(el, text) {
+  el.textContent = text
+}
+
 // * 暴露 renderer.createApp 真实的createApp 渲染挂载
 const renderer: any = createRenderer({
   createElement,
   patchProp,
   insert,
+  remove,
+  setElementText,
 })
 
 // 导出createApp方法。内部实现了renderer的createApp

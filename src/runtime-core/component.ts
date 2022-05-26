@@ -9,7 +9,7 @@ import { initSlots } from './componentSlots'
 // 创建组件实例，props,slots,provides,emit等初始化
 export function createComponentInstance(vnode: any, parent) {
   // eslint-disable-next-line no-console
-  console.log('createComponentInstance', parent)
+  console.log('createComponentInstance,parent：', parent)
   const component = {
     vnode,
     type: vnode.type,
