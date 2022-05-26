@@ -50,12 +50,12 @@ export function createRenderer(options) {
     if (!n1) {
       mountElement(n2, container, parentComponent)
     } else {
-      patchElement(n1, n2, container)
+      patchElement(n1, n2, container, parentComponent)
     }
   }
 
   // 更新Element
-  function patchElement(n1, n2, container) {
+  function patchElement(n1, n2, container, parentComponent) {
     console.log('patchElement', container)
     console.log(n1, n2)
 
@@ -63,11 +63,11 @@ export function createRenderer(options) {
     const newProps = n2.props
 
     const el = n2.el = n1.el
-    patchChildren(n1, n2, el)
+    patchChildren(n1, n2, el, parentComponent)
     patchProps(el, oldProps, newProps)
   }
 
-  function patchChildren(n1, n2, container) {
+  function patchChildren(n1, n2, container, parentComponent) {
     // !老的children的类型
     const prevShapeFlag = n1.shapeFlag
     const c1 = n1.children
@@ -84,6 +84,13 @@ export function createRenderer(options) {
       if (c1 !== c2) {
         // *2.set NewText
         hostSetElementText(container, c2)
+      }
+    } else {
+      // 新的是数组
+      // * 判断旧的是文本
+      if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+        hostSetElementText(container, '')
+        mountChildren(c2, container, parentComponent)
       }
     }
   }
