@@ -89,7 +89,9 @@ export function createRenderer(options) {
       // 新的是数组
       // * 判断旧的是文本
       if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+        // *1设置旧的为空
         hostSetElementText(container, '')
+        // *2挂载新的元素
         mountChildren(c2, container, parentComponent)
       }
     }

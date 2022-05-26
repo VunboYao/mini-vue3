@@ -16,8 +16,8 @@ export function createComponentInstance(vnode: any, parent) {
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: EMPTY_OBJ, // 父级传入的属性
     slots: {}, // 实例上的slots映射 vnode.children
-    provides: parent ? parent.provides : {}, // 组件实例的provides指向parent的provides
-    parent,
+    provides: parent ? parent.provides : {},
+    parent, // !parentComponent的使用。方便injectAPI的使用：从父级中获取provide提供的数据
     emit: () => { },
     isMounted: false, // 默认没有挂载
     subTree: {},
