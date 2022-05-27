@@ -151,12 +151,17 @@ export function createRenderer(options) {
           i++
         }
       }
+    } else if (i > e2) { // *4 老的比新的多
+      while (i <= e1) {
+        hostRemove(c1[i].el)
+        i++
+      }
     }
   }
 
   function unmountChildren(children) {
     for (let i = 0; i < children.length; i++) {
-      const el = children[i]
+      const el = children[i].el // fix:此处需要获取到el元素，否则无法正确移除el
       // !remove
       hostRemove(el)
     }
