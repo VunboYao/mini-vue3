@@ -20,8 +20,10 @@ function patchProp(el, key, prevValue, nextValue) {
   }
 }
 
-function insert(el, parent) {
-  parent.append(el)
+// 增加新插入节点的锚点
+function insert(child, parent, anchor: any) {
+  // parent.append(el)
+  parent.insertBefore(child, anchor || null)
 }
 
 function remove(child) {
