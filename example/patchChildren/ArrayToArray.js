@@ -2,6 +2,13 @@
 // 新的是 Array
 import { h, ref } from '../../lib/guide-mini-vue.esm.js'
 // *1.左侧对比
+/*
+* *指针：
+* e1:旧的最后一个索引值
+* e2:新的最后一个索引值
+* i:指向前后不同的索引值
+* i 不能大于 e1 和 e2
+*/
 // (a b) c
 // (a b) d e
 /* const prevChildren = [
