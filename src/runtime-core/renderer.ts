@@ -68,33 +68,35 @@ export function createRenderer(options) {
   }
 
   function patchChildren(n1, n2, container, parentComponent, anchor) {
-    // !老的children的类型
+    // *老的children的类型
     const prevShapeFlag = n1.shapeFlag
     const c1 = n1.children
-    // !新的children的类型
+
+    // *新的children的类型
     const { shapeFlag } = n2
     const c2 = n2.children // 获取需要设置的值
-    // 新的是文本
+
+    // *新的是文本
     if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
-      // !老的是array，新的是text
+      // todo:1.老的是array，新的是文本
       if (prevShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
         // *1.remove old children
         unmountChildren(n1.children)
       }
       if (c1 !== c2) {
-        // *2.set NewText
+        // *todo:2.老的是文本，新的是文本
         hostSetElementText(container, c2)
       }
     } else {
-      // 新的是数组
-      // * 判断旧的是文本
+      // * 新的是数组
+      // todo:3.老的是文本，新的是数组
       if (prevShapeFlag & ShapeFlags.TEXT_CHILDREN) {
-        // *1设置旧的为空
+        // 设置旧的为空
         hostSetElementText(container, '')
-        // *2挂载新的元素
+        // 挂载新的元素
         mountChildren(c2, container, parentComponent, anchor)
       } else {
-        // *3旧的是数组
+        // todo:4.老的是数组，新的也是数组
         patchKeyedChildren(c1, c2, container, parentComponent, anchor)
       }
     }
