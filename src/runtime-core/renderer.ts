@@ -68,6 +68,13 @@ export function createRenderer(options) {
   }
 
   function patchChildren(n1, n2, container, parentComponent, anchor) {
+    /*
+    * n1: oldNode1
+    * n2: newNode2
+    * c: children
+    * e: end
+    *  */
+
     // *老的children的类型
     const prevShapeFlag = n1.shapeFlag
     const c1 = n1.children
@@ -103,6 +110,14 @@ export function createRenderer(options) {
   }
 
   function patchKeyedChildren(c1, c2, container, parentComponent, parentAnchor) {
+    /*
+    * i: index 新旧node不同时的索引
+    * c: children
+    * e: end  (c.length = 1)
+    * n1: node1
+    * l2： c2.length
+    *  */
+
     let i = 0
     const l2 = c2.length
     let e1 = c1.length - 1
@@ -129,7 +144,7 @@ export function createRenderer(options) {
 
     // !2.右侧比对
     while (i <= e1 && i <= e2) {
-      const n1 = c1[e1]
+      const n1 = c1[e1] // 从右侧开始遍历
       const n2 = c2[e2]
 
       if (isSomeVNodeType(n1, n2)) {
@@ -137,60 +152,77 @@ export function createRenderer(options) {
       } else {
         break
       }
-      e1--
+      e1-- // 右侧向左移动，下标--
       e2--
     }
 
-    // *3新的比旧的多=> 创建
+    // !3新的比老的多=> 创建
     if (i > e1) {
       if (i <= e2) {
-        const nextPos = e2 + 1
+        const nextPos = e2 + 1 // 锚点指向
+        // todo：如果nextPos >= l2 ，则是插入到末尾。 如果小于，则是异同点，往前插入
         const anchor = nextPos >= l2
           ? null
           : c2[nextPos].el // insertBefore插入的锚点需要指向真实的DOM元素el
+
+        // *多个数据的遍历插入
         while (i <= e2) {
           patch(null, c2[i], container, parentComponent, anchor)
           i++
         }
       }
-    } else if (i > e2) { // *4 老的比新的多
-      while (i <= e1) {
+    } else if (i > e2) { // !4 老的比新的多, 删除
+      while (i <= e1) { // 大于e2 并且 <= e1 的移除
         hostRemove(c1[i].el)
         i++
       }
     } else {
-      // *5中间对比
+      // !5 中间对比
+      /*
+      * s1: 开始索引
+      * e2: 结束索引
+      *  */
       const s1 = i
       const s2 = i
-      const toBePatched = e2 - s2 + 1
+      const toBePatched = e2 - s2 + 1 // 获取需要遍历的最佳区间
       let patched = 0
+
+      // 遍历新节点的diff => map[key, i]
       const keyToNewIndexMap = new Map()
       for (let i = s2; i <= e2; i++) {
         const nextChild = c2[i]
         keyToNewIndexMap.set(nextChild.key, i)
       }
 
+      // 遍历老节点的diff
       for (let i = s1; i <= e1; i++) {
         const prevChild = c1[i]
-        if (patched >= toBePatched) {
+        if (patched >= toBePatched) { // 遍历老节点的时，如果已经达到了新节点最佳区间。后续直接删除
           hostRemove(prevChild.el)
           continue
         }
+
         let newIndex
         // null undefined
         if (prevChild.key != null) {
+          // 查看新节点是否存在于老节点
           newIndex = keyToNewIndexMap.get(prevChild.key)
         } else {
+          // 没有key值，遍历新节点
           for (let j = s2; j < e2; j++) {
+            // 判断是否相同
             if (isSomeVNodeType(prevChild, c2[j])) {
-              newIndex = j
+              newIndex = j // 查找到相同节点，获取索引退出
               break
             }
           }
         }
+
+        // 新节点在新的中不存在
         if (newIndex === undefined) {
           hostRemove(prevChild.el)
         } else {
+          // 存在则进行比对
           patch(prevChild, c2[newIndex], container, parentComponent, null)
           patched++
         }
