@@ -218,7 +218,7 @@ export function createRenderer(options) {
           newIndex = keyToNewIndexMap.get(prevChild.key)
         } else {
           // !没有key值，遍历新节点
-          for (let j = s2; j < e2; j++) {
+          for (let j = s2; j <= e2; j++) {
             // 判断是否相同
             if (isSomeVNodeType(prevChild, c2[j])) {
               newIndex = j // 查找到相同节点，获取索引退出

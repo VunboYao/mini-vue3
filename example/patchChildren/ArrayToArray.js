@@ -188,7 +188,7 @@ const nextChildren = [
 // *综合例子
 // a,b,(c,d,e,z),f,g
 // a,b,(d,c,y,e),f,g
-const prevChildren = [
+/* const prevChildren = [
   h('p', { key: 'A' }, 'A'),
   h('p', { key: 'B' }, 'B'),
   h('p', { key: 'C' }, 'C'),
@@ -207,6 +207,20 @@ const nextChildren = [
   h('p', { key: 'E' }, 'E'),
   h('p', { key: 'F' }, 'F'),
   h('p', { key: 'G' }, 'G'),
+] */
+
+// !fix c 节点应该是 move 而不是删除后新建
+const prevChildren = [
+  h('p', { key: 'A' }, 'A'),
+  h('p', {}, 'C'),
+  h('p', { key: 'B' }, 'B'),
+  h('p', { key: 'D' }, 'D'),
+]
+const nextChildren = [
+  h('p', { key: 'A' }, 'A'),
+  h('p', { key: 'B' }, 'B'),
+  h('p', {}, 'C'),
+  h('p', { key: 'D' }, 'D'),
 ]
 export default {
   name: 'ArrayToArray',
