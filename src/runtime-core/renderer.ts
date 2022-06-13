@@ -187,28 +187,37 @@ export function createRenderer(options) {
       const toBePatched = e2 - s2 + 1 // 获取需要遍历的最佳区间
       let patched = 0
 
+      let moved = false // 优化：是否需要移动
+      let maxNewIndexSoFar = 0 // 优化：索引判断是否需要移动
+
       // 遍历新节点的diff => map[key, i]
       const keyToNewIndexMap = new Map()
+      // 新索引与旧索引的映射表
+      const newIndexToOldIndexMap = new Array(toBePatched) // 定长数组，优化性能
+      for (let i = 0; i < toBePatched; i++) { newIndexToOldIndexMap[i] = 0 } // 初始化一个映射信息，默认为0时，需要新建。
+
+      // 遍历新节点的区间，存储 key:index
       for (let i = s2; i <= e2; i++) {
         const nextChild = c2[i]
         keyToNewIndexMap.set(nextChild.key, i)
       }
 
-      // 遍历老节点的diff
+      // !5.1删除：遍历老节点的diff:此处遍历的是旧节点的差异部分e1-s1
       for (let i = s1; i <= e1; i++) {
         const prevChild = c1[i]
-        if (patched >= toBePatched) { // 遍历老节点的时，如果已经达到了新节点最佳区间。后续直接删除
+        // 优化：遍历老节点的时，如果已经达到了新节点最佳区间。后续直接删除
+        if (patched >= toBePatched) {
           hostRemove(prevChild.el)
           continue
         }
 
         let newIndex
-        // null undefined
+        // !null undefined 有 key 的比对，性能优化。直接从映射中获取索引
         if (prevChild.key != null) {
           // 查看新节点是否存在于老节点
           newIndex = keyToNewIndexMap.get(prevChild.key)
         } else {
-          // 没有key值，遍历新节点
+          // !没有key值，遍历新节点
           for (let j = s2; j < e2; j++) {
             // 判断是否相同
             if (isSomeVNodeType(prevChild, c2[j])) {
@@ -218,13 +227,48 @@ export function createRenderer(options) {
           }
         }
 
-        // 新节点在新的中不存在
+        // 节点在新的中不存在
         if (newIndex === undefined) {
           hostRemove(prevChild.el)
         } else {
+          // 优化：通过比对索引，判断是否移动过
+          if (newIndex >= maxNewIndexSoFar) {
+            maxNewIndexSoFar = newIndex
+          } else {
+            moved = true
+          }
+          // 避免 i = 0 是没有建立映射表
+          newIndexToOldIndexMap[newIndex - s2] = i + 1 // s2 === s1
           // 存在则进行比对
           patch(prevChild, c2[newIndex], container, parentComponent, null)
           patched++
+        }
+      }
+
+      // !5.2移动&新增:最长递增子序列
+      const increasingNewIndexSequence = moved ? getSequence(newIndexToOldIndexMap) : []
+      let j = increasingNewIndexSequence.length - 1 // 递增子序列指针
+
+      // 倒序插入
+      for (let i = toBePatched - 1; i >= 0; i--) {
+        const index = i + s2 // 倒序遍历新节点的索引
+        const child = c2[index] // 或许比对的node
+        const anchor = index + 1 >= l2 ? null : c2[index + 1].el
+        /*
+          * 递增子序列：[1,2]
+          * [0,1,2]
+          *  */
+        // 新增
+        if (newIndexToOldIndexMap[i] === 0) {
+          patch(null, child, container, parentComponent, anchor)
+        } else if (moved) {
+          // 移动
+          if (j < 0 || i !== increasingNewIndexSequence[j]) {
+            console.log('move node')
+            hostInsert(child.el, container, anchor)
+          } else {
+            j--
+          }
         }
       }
     }
@@ -342,6 +386,47 @@ export function createRenderer(options) {
     const { children } = n2
     const textNode = n2.el = document.createTextNode(children)
     container.append(textNode)
+  }
+
+  function getSequence(arr: number[]): number[] {
+    const p = arr.slice()
+    const result = [0]
+    let i, j, u, v, c
+    const len = arr.length
+    for (i = 0; i < len; i++) {
+      const arrI = arr[i]
+      if (arrI !== 0) {
+        j = result[result.length - 1]
+        if (arr[j] < arrI) {
+          p[i] = j
+          result.push(i)
+          continue
+        }
+        u = 0
+        v = result.length - 1
+        while (u < v) {
+          c = (u + v) >> 1
+          if (arr[result[c]] < arrI) {
+            u = c + 1
+          } else {
+            v = c
+          }
+        }
+        if (arrI < arr[result[u]]) {
+          if (u > 0) {
+            p[i] = result[u - 1]
+          }
+          result[u] = i
+        }
+      }
+    }
+    u = result.length
+    v = result[u - 1]
+    while (u-- > 0) {
+      result[u] = v
+      v = p[v]
+    }
+    return result
   }
 
   // 封装了渲染的所有逻辑。将内部render渲染暴露出去
