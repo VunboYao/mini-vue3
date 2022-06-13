@@ -341,17 +341,27 @@ export function createRenderer(options) {
   }
 
   function processComponent(n1, n2, container, parentComponent, anchor) {
-    mountComponent(n2, container, parentComponent, anchor)
+    if (!n1) {
+      mountComponent(n2, container, parentComponent, anchor)
+    } else {
+      updateComponent(n1, n2)
+    }
+  }
+
+  function updateComponent(n1, n2) {
+    const instance = n2.component = n1.component
+    instance.next = n2
+    instance.update()
   }
 
   function mountComponent(initialVNode, container, parentComponent, anchor) {
-    const instance = createComponentInstance(initialVNode, parentComponent)
+    const instance = initialVNode.component = createComponentInstance(initialVNode, parentComponent)
     setupComponent(instance)
     setupRenderEffect(instance, initialVNode, container, anchor)
   }
 
   function setupRenderEffect(instance: any, initialVNode, container, anchor) {
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounter) {
         console.log('init')
         // 得到组件对应的虚拟dom
@@ -367,6 +377,7 @@ export function createRenderer(options) {
         instance.isMounter = true // 已挂载
       } else {
         console.log('update')
+        //
         // 得到组件对应的虚拟dom
         const { proxy } = instance // 从实例中获取代理
         const subTree = instance.render.call(proxy)

@@ -13,6 +13,7 @@ export function createComponentInstance(vnode: any, parent) {
   const component = {
     vnode,
     type: vnode.type,
+    next: null,
     setupState: {}, // todo:组件实例上初始化setupState || function
     props: EMPTY_OBJ, // 父级传入的属性
     slots: {}, // 实例上的slots映射 vnode.children
